@@ -9,7 +9,7 @@ script = {
     author = "krishpranav (wprecon)",
     risklevel = "low",
     type = "Checker",
-    description = "It will check it the target is a honey pot, and give a percentage based on shodan"
+    description = "It will check it the target is a honey pot, and give a percentage based on shodan",
     references = {""},
 }
 
