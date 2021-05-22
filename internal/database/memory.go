@@ -81,3 +81,11 @@ func (db *memory) AddInt(key string) {
 	db.intx[key]++
 	mutex.Unlock()
 }
+
+func (db *memory) GetString(key string) string  { return db.stringx[key] }
+func (db *memory) GetSlice(key string) []string { return db.slice[key] }
+func (db *memory) GetInt(key string) int        { return db.intx[key] }
+func (db *memory) GetBool(key string) bool      { return db.boolx[key] }
+func (db *memory) GetMapString(key string) map[string]string {
+	return db.mapstring[key]
+}
