@@ -89,3 +89,7 @@ func (db *memory) GetBool(key string) bool      { return db.boolx[key] }
 func (db *memory) GetMapString(key string) map[string]string {
 	return db.mapstring[key]
 }
+
+func (db *memory) GetMapMapString(key, key2 string) string {
+	return db.mapstring[key][key2]
+}
