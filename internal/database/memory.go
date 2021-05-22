@@ -31,3 +31,15 @@ func NewMemory() *memory {
 
 	return database
 }
+
+func (db *memory) SetString(key, value string) {
+	mutex.Lock()
+	db.stringx[key] = value
+	mutex.Unlock()
+}
+
+func (db *memory) SetSlice(key string, value []string) {
+	mutex.Lock()
+	db.slice[key] = value
+	mutex.Unlock()
+}
