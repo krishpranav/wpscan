@@ -30,3 +30,18 @@ function main(target)
 end
 
 
+function convert(text)
+    text = text:gsub("0.0", "0%")
+    text = text:gsub("0.1", "10%")
+    text = text:gsub("0.2", "20%")
+    text = text:gsub("0.3", "30%")
+    text = text:gsub("0.4", "40%")
+    text = text:gsub("0.5", "50%")
+    text = text:gsub("0.6", "60%")
+    text = text:gsub("0.7", "70%")
+    text = text:gsub("0.8", "80%")
+    text = text:gsub("0.9", "90%")
+    text = text:gsub("1.0", "100%")
+
+    return text
+end
