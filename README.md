@@ -16,3 +16,5 @@ go build main.go
 go get -u github.com/krishpranav/wpscan
 wpscan
 ```
+
+- note wpscan is under development
