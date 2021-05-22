@@ -43,3 +43,15 @@ func (db *memory) SetSlice(key string, value []string) {
 	db.slice[key] = value
 	mutex.Unlock()
 }
+
+func (db *memory) SetInt(key string, value int) {
+	mutex.Lock()
+	db.intx[key] = value
+	mutex.Unlock()
+}
+
+func (db *memory) SetBool(key string, value bool) {
+	mutex.Lock()
+	db.boolx[key] = value
+	mutex.Unlock()
+}
