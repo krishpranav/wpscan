@@ -55,3 +55,15 @@ func (db *memory) SetBool(key string, value bool) {
 	db.boolx[key] = value
 	mutex.Unlock()
 }
+
+func (db *memory) SetMapString(key string, value map[string]string) {
+	mutex.Lock()
+	db.mapstring[key] = value
+	mutex.Unlock()
+}
+
+func (db *memory) SetMapMapString(key, key2, value string) {
+	mutex.Lock()
+	db.mapstring[key][key2] = value
+	mutex.Unlock()
+}
