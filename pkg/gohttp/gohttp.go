@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/krishpranav/wpscan/internal/database"
@@ -66,4 +67,14 @@ func NewHTTPClient() *httpOptions {
 	options.url = &URLOptions{}
 
 	return options
+}
+
+func (options *httpOptions) SetURL(url string) *httpOptions {
+	if !strings.HasSuffix(url, "/") {
+		options.url.Simple = url + "/"
+		options.url.Full = url + "/"
+	} else {
+		options.url.Simple = url
+		options.url.Full = url
+	}
 }
