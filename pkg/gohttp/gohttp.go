@@ -55,3 +55,15 @@ func SimpleRequest(params ...string) *Response {
 
 	return response
 }
+
+func NewHTTPClient() *httpOptions {
+	options := &httpOptions{
+		method:      "GET",
+		userAgent:   "WPrecon - Wordpress Recon (Vulnerability Scanner)",
+		data:        nil,
+		contentType: "text/html; charset=UTF-8"}
+
+	options.url = &URLOptions{}
+
+	return options
+}
