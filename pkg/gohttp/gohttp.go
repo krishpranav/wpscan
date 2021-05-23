@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/krishpranav/wpscan/internal/database"
 )
 
 var (
@@ -30,4 +32,26 @@ type URLOptions struct {
 	Full      string
 	Directory string
 	URL       *url.URL
+}
+
+func SimpleRequest(params ...string) *Response {
+	http := NewHTTPClient()
+	http.SetURL(params[0])
+
+	if len(params) > 1 {
+		http.SetURLDirectory(params[1])
+	}
+
+	http.OnTor(database.Memory.GetBool("HTTP Options TOR"))
+	http.OnRandomUserAgent(database.Memory.GetBool("HTTP Options Random Agent"))
+	http.OnTLSCertificateVerify(database.Memory.GetBool("HTTP Options TLS Certificate Verify"))
+	http.FirewallDetection(true)
+
+	response, err := http.Run()
+
+	if err != nil {
+		printer.Fatal(err)
+	}
+
+	return response
 }
