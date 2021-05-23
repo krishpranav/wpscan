@@ -24,3 +24,10 @@ type httpOptions struct {
 	firewall             bool
 	sleep                time.Duration
 }
+
+type URLOptions struct {
+	Simple    string
+	Full      string
+	Directory string
+	URL       *url.URL
+}
