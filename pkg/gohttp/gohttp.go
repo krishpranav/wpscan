@@ -1,13 +1,17 @@
 package gohttp
 
 import (
+	"crypto/tls"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
 	"github.com/krishpranav/wpscan/internal/database"
+	"github.com/krishpranav/wpscan/pkg/printer"
 )
 
 var (
@@ -26,6 +30,13 @@ type httpOptions struct {
 	contentType          string
 	firewall             bool
 	sleep                time.Duration
+}
+
+type Response struct {
+	RawIo    io.Reader
+	Raw      string
+	URL      *URLOptions
+	Response *http.Response
 }
 
 type URLOptions struct {
@@ -77,4 +88,174 @@ func (options *httpOptions) SetURL(url string) *httpOptions {
 		options.url.Simple = url
 		options.url.Full = url
 	}
+
+	return options
+}
+
+func (options *httpOptions) SetURLDirectory(directory string) *httpOptions {
+	if !strings.HasPrefix(directory, "/") && !strings.HasSuffix(options.url.Simple, "/") {
+		options.url.Directory = "/" + directory
+		options.url.Full = options.url.Simple + "/" + directory
+	} else {
+		options.url.Directory = directory
+		options.url.Full = options.url.Simple + directory
+	}
+
+	return options
+}
+
+func (options *httpOptions) SetURLFull(full string) *httpOptions {
+	options.url.Full = full
+
+	return options
+}
+
+func (options *httpOptions) OnTor(status bool) (*httpOptions, error) {
+	if status {
+		tor, err := url.Parse("http://127.0.0.1:9080")
+
+		if err != nil {
+			return nil, fmt.Errorf("proxy URL is invalid (%w)", err)
+		}
+
+		options.proxy = http.ProxyURL(tor)
+	}
+
+	return options, nil
+}
+
+func (options *httpOptions) OnRandomUserAgent(status bool) *httpOptions {
+	if status {
+		options.userAgent = randomuseragent()
+	}
+
+	return options
+}
+
+func (options *httpOptions) OnTLSCertificateVerify(status bool) *httpOptions {
+	options.tlsCertificateVerify = status
+
+	return options
+}
+
+func (options *httpOptions) SetMethod(method string) *httpOptions {
+	options.method = method
+
+	return options
+}
+
+func (options *httpOptions) SetUserAgent(userAgent string) *httpOptions {
+	options.userAgent = userAgent
+
+	return options
+}
+
+func (options *httpOptions) SetForm(form *url.Values) *httpOptions {
+	options.data = strings.NewReader(form.Encode())
+
+	return options
+}
+
+func (options *httpOptions) SetData(data string) *httpOptions {
+	options.data = strings.NewReader(data)
+
+	return options
+}
+
+func (options *httpOptions) SetRedirectFunc(redirectFunc func(req *http.Request, via []*http.Request) error) *httpOptions {
+	options.redirect = redirectFunc
+
+	return options
+}
+
+func (options *httpOptions) SetContentType(contentType string) *httpOptions {
+	options.contentType = contentType
+
+	return options
+}
+
+func (options *httpOptions) FirewallDetection(status bool) *httpOptions {
+	options.firewall = status
+
+	return options
+}
+
+func (options *httpOptions) SetSleep(tm int) *httpOptions {
+	options.sleep = time.Duration(tm)
+
+	return options
+}
+
+func (options *httpOptions) f(http *Response) {
+	exists, firewall, output, solve, confidence := NewFirewallDetectionPassive(http).All().Run()
+
+	if exists {
+		printer.Danger("Firewall Active Detection:", firewall)
+		printer.List("Detection By:", output).D()
+		printer.List("Confidence:", fmt.Sprintf("%d%%", confidence)).D()
+		if solve != "" {
+			printer.List("Solve:", solve).Warning()
+		}
+
+		if response := printer.ScanQ("Do you wish to continue ? [y]es | [N]o : "); response != "y" {
+			printer.Fatal("Exiting...")
+		}
+
+		printer.Println()
+		firewallPassing = true
+	}
+}
+
+func (options *httpOptions) Run() (*Response, error) {
+	client := &http.Client{
+		CheckRedirect: options.redirect,
+		Transport: &http.Transport{
+			Proxy:             options.proxy,
+			DisableKeepAlives: true,
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: options.tlsCertificateVerify,
+			},
+		},
+	}
+
+	request, err := http.NewRequest(options.method, options.url.Full, options.data)
+
+	if err != nil {
+		return nil, err
+	}
+
+	request.Header.Set("User-Agent", options.userAgent)
+	request.Header.Set("Content-Type", options.contentType)
+
+	response, err := client.Do(request)
+
+	if err != nil {
+		return nil, err
+	}
+
+	raw, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	database.Memory.AddInt("HTTP Total")
+
+	structResponse := &Response{
+		Raw:      string(raw),
+		URL:      options.url,
+		Response: response,
+	}
+
+	if options.firewall && !firewallPassing {
+		options.f(structResponse)
+	}
+
+	if options.sleep != 0 {
+		time.Sleep(time.Duration(options.sleep) * time.Second)
+	} else if sleep := database.Memory.GetInt("HTTP Time Sleep"); sleep != 0 {
+		time.Sleep(time.Duration(sleep) * time.Second)
+	}
+
+	return structResponse, nil
 }
