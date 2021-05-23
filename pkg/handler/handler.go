@@ -18,3 +18,11 @@ func HandlerErrorTorProxy() {
 		}
 	}
 }
+
+func HandlerErrorURL() {
+	if recovered := recover(); recovered != nil {
+		recoverdS := fmt.Sprintf("%s", recovered)
+
+		printer.Fatal(recoverdS + "\n")
+	}
+}
