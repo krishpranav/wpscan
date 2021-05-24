@@ -13,9 +13,9 @@ import (
 )
 
 var root = &cobra.Command{
-	Use:     "wprecon",
+	Use:     "wpscan",
 	Short:   "Wordpress Recon",
-	Long:    `wprecon (Wordpress Recon) is a tool for wordpress exploration!`,
+	Long:    `wpscan (Wordpress Recon) is a tool for wordpress exploration!`,
 	Run:     cmd.RootOptionsRun,
 	PostRun: cmd.RootOptionsPostRun,
 }
@@ -45,10 +45,10 @@ func init() {
 	root.PersistentFlags().BoolP("tor", "", false, "Use Tor anonymity network")
 	root.PersistentFlags().BoolP("disable-tls-checks", "", false, "Disables SSL/TLS certificate verification.")
 	root.PersistentFlags().BoolP("verbose", "v", false, "Verbosity mode.")
-	root.PersistentFlags().BoolP("force", "f", false, "Forces wprecon to not check if the target is running WordPress and forces other executions.")
+	root.PersistentFlags().BoolP("force", "f", false, "Forces wpscan to not check if the target is running WordPress and forces other executions.")
 	root.PersistentFlags().IntP("http-sleep", "", 0, "You can make each request slower, if there is a WAF, it can make it difficult for it to block you. (default: 0)")
 
-	root.Flags().BoolP("aggressive-mode", "A", false, "Activates the aggressive mode of wprecon.")
+	root.Flags().BoolP("aggressive-mode", "A", false, "Activates the aggressive mode of wpscan.")
 	root.Flags().BoolP("detection-waf", "", false, "I will try to detect if the target is using any WAF Wordpress.")
 	root.Flags().StringP("wp-content-dir", "", "wp-content", "In case the wp-content directory is customized.")
 

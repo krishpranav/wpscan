@@ -32,7 +32,7 @@ func UsersEnumeratePassive() (users []string, method string, URL string) {
 	return
 }
 
-// UsersEnumerateAgressive :: In its aggressive mode, wprecon tries to enumerate users using 4 types of enumeration, which can be considered difficult to access for an ordinary user, and for this reason they are classified as aggressive enumeration.
+// UsersEnumerateAgressive :: In its aggressive mode, wpscan tries to enumerate users using 4 types of enumeration, which can be considered difficult to access for an ordinary user, and for this reason they are classified as aggressive enumeration.
 func UsersEnumerateAgressive() (users []string, method string, URL string) {
 	var ujson uJSON
 	var done bool

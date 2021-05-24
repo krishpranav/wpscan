@@ -6,7 +6,7 @@ local client  =     http.client()
 
 script = {
     title = "Honey pot checker",
-    author = "krishpranav (wprecon)",
+    author = "krishpranav (wpscan)",
     risklevel = "low",
     type = "Checker",
     description = "It will check it the target is a honey pot, and give a percentage based on shodan",

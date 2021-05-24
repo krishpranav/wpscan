@@ -20,16 +20,16 @@ func green(s string) string {
 var HelpMain = fmt.Sprintf(`wpscan (Wordpress scanner) is a tool for wordpress vulnerability scanner!
 
 Usage:
-  wprecon %s
+  wpscan %s
 
 Subcommands:
   fuzzer, fuzz               Fuzzing directory or Passwords.
 
 Flags:
-  -h, --help                 help for wprecon.
+  -h, --help                 help for wpscan.
   -u, --url %s         Target URL (Ex: http(s)://example.com/). %s
-  -f, --force                Forces wprecon to not check if the target is running WordPress and forces other executions.
-  -A, --aggressive-mode      Activates the aggressive mode of wprecon.
+  -f, --force                Forces wpscan to not check if the target is running WordPress and forces other executions.
+  -A, --aggressive-mode      Activates the aggressive mode of wpscan.
       --detection-waf        I will try to detect if the target is using any WAF.
       --random-agent         Use randomly selected HTTP(S) User-Agent header value.
       --tor                  Use Tor anonymity network.
@@ -40,9 +40,9 @@ Flags:
   -v, --verbose              Verbosity mode.
 
 Example:
-  wprecon -u "https://xxxxxxxx.com" --detection-waf
-  wprecon -u "https://xxxxxxxx.com" --aggressive-mode
-  wprecon -u "https://xxxxxxxx.com" -A --scripts script1,script2,script3
+  wpscan -u "https://xxxxxxxx.com" --detection-waf
+  wpscan -u "https://xxxxxxxx.com" --aggressive-mode
+  wpscan -u "https://xxxxxxxx.com" -A --scripts script1,script2,script3
 `, green("[flags]"),
 	green("[target]"),
 	printer.Required,
@@ -54,7 +54,7 @@ Example:
 var HelpFuzzer = fmt.Sprintf(`wpscan (Wordpress scanner) is a tool for wordpress vulnerability scanner!
 
 Usage:
-  wprecon fuzzer %s
+  wpscan fuzzer %s
 
 Flags:
       --backup-file            Performs a fuzzing to try to find the backup file if it exists.
@@ -65,9 +65,9 @@ Flags:
       --p-suffix %s        Sets a suffix for all passwords in the wordlist.
 
 Global Flags:
-  -h, --help                   help for wprecon.
+  -h, --help                   help for wpscan.
   -u, --url %s           Target URL (Ex: http(s)://example.com/). %s
-  -f, --force                  Forces wprecon to not check if the target is running WordPress and forces other executions.
+  -f, --force                  Forces wpscan to not check if the target is running WordPress and forces other executions.
       --random-agent           Use randomly selected HTTP(S) User-Agent header value.
       --tor                    Use Tor anonymity network.
       --disable-tls-checks     Disables SSL/TLS certificate verification.
@@ -76,9 +76,9 @@ Global Flags:
   -v, --verbose                Verbosity mode.
 
 Example:
-  wprecon fuzz -u "https://xxxxxxxx.com" -U user -P $HOME/wordlist/rockyou.txt
-  wprecon fuzz -u "https://xxxxxxxx.com" -U user1,user2,user3 -P $HOME/wordlist/rockyou.txt
-  wprecon fuzz -u "https://xxxxxxxx.com" --backup-file --random-agent
+  wpscan fuzz -u "https://xxxxxxxx.com" -U user -P $HOME/wordlist/rockyou.txt
+  wpscan fuzz -u "https://xxxxxxxx.com" -U user1,user2,user3 -P $HOME/wordlist/rockyou.txt
+  wpscan fuzz -u "https://xxxxxxxx.com" --backup-file --random-agent
 `, green("[flags]"),
 	green("[list]"),
 	green("[file-path]"),

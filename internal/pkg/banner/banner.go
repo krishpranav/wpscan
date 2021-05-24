@@ -17,7 +17,7 @@ import (
 func Banner() {
 	printer.Println("——————————————————————————————————————————————————————————————————")
 	fmt.Print("___       ______________________________________________   __\n__ |     / /__  __ \\__  __ \\__  ____/_  ____/_  __ \\__  | / /\n__ | /| / /__  /_/ /_  /_/ /_  __/  _  /    _  / / /_   |/ / \n__ |/ |/ / _  ____/_  _, _/_  /___  / /___  / /_/ /_  /|  /  \n____/|__/  /_/     /_/ |_| /_____/  \\____/  \\____/ /_/ |_/   \n\n")
-	printer.Println("Github: ", "https://github.com/blackbinn/wprecon")
+	printer.Println("Github: ", "https://github.com/krishpranav/wpscan")
 
 	if newVersion := update.CheckUpdate(); newVersion != "" {
 		printer.Println("Version:", version.Version, "(New Version: "+newVersion+")")
@@ -55,9 +55,9 @@ func SBanner() {
 	}
 
 	if database.Memory.GetBool("Verbose") && database.Memory.GetBool("HTTP Options TOR") {
-		printer.Danger("(Alert) Activating verbose mode together with tor mode can make the wprecon super slow.\n")
+		printer.Danger("(Alert) Activating verbose mode together with tor mode can make the wpscan super slow.\n")
 	} else if database.Memory.GetBool("Verbose") {
-		printer.Danger("(Alert) Enabling verbose mode can slow down wprecon.\n")
+		printer.Danger("(Alert) Enabling verbose mode can slow down wpscan.\n")
 	} else {
 		printer.Println()
 	}
