@@ -15,6 +15,10 @@ func Loader(L *lua.LState) int {
 	return 1
 }
 
+var exports = map[string]lua.LGFunction{
+	"lookup_ip": lookupip,
+}
+
 func lookupip(L *lua.LState) int {
 	ips, err := net.LookupIP(L.ToString(1))
 
