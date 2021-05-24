@@ -3,10 +3,10 @@ package fuzzing
 import (
 	"time"
 
-	"github.com/krishpranav/wprecon/internal/database"
-	"github.com/krishpranav/wprecon/pkg/gohttp"
-	"github.com/krishpranav/wprecon/pkg/printer"
-	"github.com/krishpranav/wprecon/pkg/wordlist"
+	"github.com/krishpranav/wpscan/internal/database"
+	"github.com/krishpranav/wpscan/pkg/gohttp"
+	"github.com/krishpranav/wpscan/pkg/printer"
+	"github.com/krishpranav/wpscan/pkg/wordlist"
 )
 
 func BackupFile() {
