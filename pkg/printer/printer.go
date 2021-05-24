@@ -2,8 +2,10 @@ package printer
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"runtime"
+	"strings"
 
 	color "github.com/logrusorgru/aurora"
 )
@@ -59,4 +61,19 @@ func (l *ln) L() *ln {
 	fmt.Fprintln(&stdout)
 
 	return l
+}
+
+func Println(t ...interface{}) {
+	fmt.Fprintln(&stdout, t...)
+}
+
+func Printf(format string, t ...interface{}) {
+	fmt.Fprintf(&stdout, format, t...)
+}
+
+func Done(t ...string) *ln {
+	var raw = strings.Join(t, " ")
+	io.WriteString(&stdout, prefixDone+" "+raw+"\n")
+
+	return line
 }
