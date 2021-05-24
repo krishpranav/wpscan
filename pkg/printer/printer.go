@@ -2,6 +2,7 @@ package printer
 
 import (
 	"os"
+	"runtime"
 
 	color "github.com/logrusorgru/aurora"
 )
@@ -30,3 +31,23 @@ var (
 
 	prefixTopLine = color.Yellow("[✲]").String()
 )
+
+var seekCurrent = 1
+
+func init() {
+	if runtime.GOOS == "windows" {
+		prefixDanger = "[✗]"
+		prefixFatal = "[!]"
+		prefixDone = "[✔]"
+		prefixWarning = "[!]"
+		prefixScan = "[?]"
+		prefixInfo = "[i]"
+
+		prefixListDanger = "    —"
+		prefixListDone = "    —"
+		prefixListDefault = "    —"
+		prefixListWarning = "    —"
+
+		prefixTopLine = "[✲]"
+	}
+}
