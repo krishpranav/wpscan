@@ -1,6 +1,7 @@
 package printer
 
 import (
+	"fmt"
 	"os"
 	"runtime"
 
@@ -50,4 +51,12 @@ func init() {
 
 		prefixTopLine = "[✲]"
 	}
+}
+
+type ln struct{}
+
+func (l *ln) L() *ln {
+	fmt.Fprintln(&stdout)
+
+	return l
 }
